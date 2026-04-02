@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,7 +59,6 @@ public class BudgetPlanService {
         
         budgetPlan = budgetPlanRepository.save(budgetPlan);
         
-        // Seed default items
         seedDefaultItems(budgetPlan);
         
         return convertToResponse(budgetPlan);
@@ -99,7 +97,6 @@ public class BudgetPlanService {
             
             item = budgetItemRepository.save(item);
             
-            // Create 12 monthly values for each item
             for (int month = 1; month <= 12; month++) {
                 MonthlyValue monthlyValue = new MonthlyValue();
                 monthlyValue.setBudgetItem(item);

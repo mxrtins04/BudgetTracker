@@ -26,9 +26,6 @@ public class BudgetItemService {
     private BudgetPlanRepository budgetPlanRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private MonthlyValueRepository monthlyValueRepository;
 
     public BudgetItemResponse createBudgetItem(Long userId, Long planId, BudgetItemRequest request) {
@@ -42,7 +39,6 @@ public class BudgetItemService {
 
         item = budgetItemRepository.save(item);
 
-        // Create 12 monthly values
         for (int month = 1; month <= 12; month++) {
             MonthlyValue monthlyValue = new MonthlyValue();
             monthlyValue.setBudgetItem(item);
@@ -77,7 +73,6 @@ public class BudgetItemService {
                 .findByBudgetItemAndMonth(item, request.getMonth())
                 .orElseThrow(() -> new IllegalArgumentException("Monthly value not found"));
 
-        // Apply sign based on group type
         BigDecimal amount = request.getAmount();
         if (item.getGroupType() == GroupType.FIXED_EXPENSE || item.getGroupType() == GroupType.VARIABLE_COST) {
             amount = amount.negate();
